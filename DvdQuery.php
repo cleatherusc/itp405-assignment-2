@@ -27,13 +27,14 @@ class DvdQuery
 
   public function orderByTitle()
   {
-    $this->orderBy = 'Title';
+    $this->orderBy = 'title';
   }
 
   public function find()
   {
+    $order = $this->orderBy;
     $sql = "
-      SELECT title, genres.genre_name as genre, formats.format_name as format, ratings.rating_name as rating, rating_id
+      SELECT title, genres.genre_name as genre, formats.format_name as format, ratings.rating_name as rating
       FROM dvds
       INNER JOIN genres
       ON genre_id = genres.id
@@ -41,14 +42,15 @@ class DvdQuery
       ON format_id = formats.id
       INNER JOIN ratings
       ON rating_id = ratings.id
-      AND title LIKE ?
-      ORDER BY ?;
+      AND title LIKE :title_value
+      ORDER BY $order ASC;
     ";
+
     $statement = self::$pdo->prepare($sql);
     $like = "%".$this->searchTerm."%";
-    $statement->bindParam(1, $like);
-    $statement->bindParam(2, $this->orderBy);
+    $statement->bindParam(':title_value', $like);
     $statement->execute();
+    var_dump($statement);
     $res = $statement->fetchAll(PDO::FETCH_OBJ);
     return $res;
   }
