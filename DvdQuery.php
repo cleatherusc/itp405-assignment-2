@@ -50,7 +50,6 @@ class DvdQuery
     $like = "%".$this->searchTerm."%";
     $statement->bindParam(':title_value', $like);
     $statement->execute();
-    var_dump($statement);
     $res = $statement->fetchAll(PDO::FETCH_OBJ);
     return $res;
   }
