@@ -8,7 +8,7 @@ class DvdQuery
   private $database_name = 'dvd';
   private $username = 'student';
   private $password = 'ttrojan';
-  public static $pdo;
+  private static $pdo;
 
   private $searchTerm = '';
   private $orderBy = '';
