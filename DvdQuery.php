@@ -27,23 +27,21 @@ class DvdQuery
 
   public function orderByTitle()
   {
-    $this->orderBy = 'title';
+    $this->orderBy = 'ORDER BY title';
   }
 
   public function find()
   {
     $order = $this->orderBy;
     $sql = "
-      SELECT title, genres.genre_name as genre, formats.format_name as format, ratings.rating_name as rating
+      SELECT dvds.id, title, genres.genre_name as genre, ratings.rating_name as rating
       FROM dvds
       INNER JOIN genres
       ON genre_id = genres.id
-      INNER JOIN formats
-      ON format_id = formats.id
       INNER JOIN ratings
       ON rating_id = ratings.id
       AND title LIKE :title_value
-      ORDER BY $order ASC;
+      $order;
     ";
 
     $statement = self::$pdo->prepare($sql);
